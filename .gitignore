@@ -1,0 +1,5 @@
+*.exe
+*.msi
+*.setup
+node_modules/
+.git-bak/

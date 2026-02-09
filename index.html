@@ -1,0 +1,3001 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PkgHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #1C1C1C;
+            color: #FFFFFF;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .menu-toggle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #2D2D2D;
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #404040;
+        }
+        
+        .menu-toggle:hover {
+            background: #0078D7;
+            transform: scale(1.1);
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+        }
+        
+        .menu-overlay.active {
+            display: block;
+        }
+        
+        .hamburger-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            background: #2D2D2D;
+            z-index: 2001;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #404040;
+        }
+        
+        .hamburger-menu.active {
+            transform: translateX(0);
+        }
+        
+        .menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .menu-title {
+            font-size: 24px;
+            font-weight: 300;
+            color: #0078D7;
+        }
+        
+        .menu-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .menu-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .menu-section {
+            margin-bottom: 25px;
+        }
+        
+        .menu-section-title {
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #404040;
+        }
+        
+        .menu-item.active {
+            background: rgba(0, 120, 215, 0.2);
+            color: #0078D7;
+            border-color: #0078D7;
+        }
+        
+        .menu-icon {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .menu-text {
+            font-size: 16px;
+            flex: 1;
+        }
+        
+        .main-title {
+            font-size: 48px;
+            font-weight: 300;
+            color: #0078D7;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .main-title .plus {
+            color: #FF4343;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #A0A0A0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .search-section {
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .metro-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 16px 24px;
+            font-size: 18px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .metro-input:focus {
+            outline: none;
+            border-color: #0078D7;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.3);
+        }
+        
+        .metro-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .metro-btn {
+            background: #0078D7;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+        
+        .metro-btn:hover {
+            background: #106EBE;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 120, 215, 0.4);
+        }
+        
+        .search-hint {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .suggestions-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #2D2D2D;
+            border: 1px solid #404040;
+            border-top: none;
+            z-index: 1000;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .suggestions-container.show {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .suggestion-item:hover {
+            background: rgba(0, 120, 215, 0.2);
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestion-name {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .suggestion-id {
+            font-size: 12px;
+            color: #888;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .search-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: #A0A0A0;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .search-tag:hover {
+            background: rgba(0, 120, 215, 0.2);
+            color: white;
+        }
+        
+        .tiles-container {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 25px;
+            color: #E0E0E0;
+            text-align: center;
+        }
+        
+        .metro-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .metro-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .metro-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .metro-tile {
+            background: #2D2D2D;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-top: 4px solid;
+        }
+        
+        .metro-tile:hover {
+            background: #3D3D3D;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tile-browser { border-color: #0078D7; }
+        .tile-dev { border-color: #107C10; }
+        .tile-chinese { border-color: #FF4343; }
+        .tile-media { border-color: #9B4F96; }
+        .tile-game { border-color: #FF8C00; }
+        .tile-all { border-color: #767676; }
+        
+        .metro-tile .icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .metro-tile h3 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        
+        .metro-tile p {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+        
+        .apps-section {
+            min-height: 400px;
+        }
+        
+        .metro-apps {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .metro-app-card {
+            background: #2D2D2D;
+            padding: 0;
+            overflow: hidden;
+            border: none;
+            transition: all 0.3s;
+            border-top: 4px solid #0078D7;
+            cursor: pointer;
+        }
+        
+        .metro-app-card:hover {
+            background: #3D3D3D;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .app-card-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .app-card-icon {
+            width: 48px;
+            height: 48px;
+            background: #0078D7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .app-card-title h3 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+        
+        .app-card-title .app-id {
+            font-size: 12px;
+            color: #888;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .app-card-content {
+            padding: 20px;
+        }
+        
+        .app-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .metro-install-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0078D7;
+            color: white;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .metro-install-btn:hover {
+            background: #106EBE;
+        }
+        
+        .metro-install-btn.installing {
+            background: #505050;
+            cursor: not-allowed;
+        }
+        
+        .metro-install-btn.installed {
+            background: #107C10;
+            cursor: default;
+        }
+        
+        .metro-install-btn.admin-required {
+            background: #FF8C00;
+        }
+        
+        .metro-progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #2D2D2D;
+            padding: 20px 40px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+            z-index: 1000;
+            border-top: 4px solid #0078D7;
+        }
+        
+        .metro-progress.show {
+            transform: translateY(0);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar-container {
+            height: 8px;
+            background: #404040;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0078D7, #00BCF2);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .progress-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+        
+        .metro-empty {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+        }
+        
+        .metro-empty .icon {
+            font-size: 64px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        
+        .metro-empty h2 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #A0A0A0;
+        }
+        
+        .metro-empty p {
+            font-size: 16px;
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .metro-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .metro-app-card {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .metro-app-card:nth-child(2) { animation-delay: 0.05s; }
+        .metro-app-card:nth-child(3) { animation-delay: 0.1s; }
+        .metro-app-card:nth-child(4) { animation-delay: 0.15s; }
+        .metro-app-card:nth-child(5) { animation-delay: 0.2s; }
+        .metro-app-card:nth-child(6) { animation-delay: 0.25s; }
+        
+        .back-btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: #555;
+        }
+        
+        .app-detail-container {
+            background: #2D2D2D;
+            padding: 40px;
+            margin-top: 30px;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .detail-icon {
+            width: 80px;
+            height: 80px;
+            background: #0078D7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .detail-title h1 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+        
+        .detail-title .app-id {
+            font-size: 16px;
+            color: #888;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .detail-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #404040;
+        }
+        
+        .meta-item h4 {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .meta-item p {
+            font-size: 18px;
+            color: white;
+        }
+        
+        .detail-description {
+            margin-bottom: 40px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .detail-description h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #E0E0E0;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .detail-install-btn {
+            background: #0078D7;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex: 1;
+        }
+        
+        .detail-install-btn:hover {
+            background: #106EBE;
+        }
+        
+        .detail-secondary-btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+        
+        .detail-secondary-btn:hover {
+            background: #555;
+        }
+        
+        .source-status {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .source-excellent { background: #107C10; color: white; }
+        .source-good { background: #0078D7; color: white; }
+        .source-medium { background: #FF8C00; color: white; }
+        .source-slow { background: #FF4343; color: white; }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .settings-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #404040;
+            padding-bottom: 0;
+        }
+        
+        .settings-tab {
+            background: transparent;
+            color: #A0A0A0;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .settings-tab:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-tab.active {
+            color: #0078D7;
+            border-bottom-color: #0078D7;
+            background: rgba(0, 120, 215, 0.1);
+        }
+        
+        .settings-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .settings-content.active {
+            display: block;
+        }
+        
+        .settings-section {
+            background: #2D2D2D;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid #404040;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 25px;
+            color: #E0E0E0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title .icon {
+            font-size: 24px;
+        }
+        
+        .settings-group {
+            margin-bottom: 25px;
+        }
+        
+        .settings-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .setting-item:hover {
+            border-color: #404040;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .setting-label {
+            flex: 1;
+        }
+        
+        .setting-label h3 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 5px;
+            color: #FFFFFF;
+        }
+        
+        .setting-label p {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.5;
+        }
+        
+        .setting-control {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .metro-switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+        }
+        
+        .metro-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .metro-switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #404040;
+            transition: .4s;
+            border-radius: 0;
+        }
+        
+        .metro-switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 0;
+        }
+        
+        input:checked + .metro-switch-slider {
+            background-color: #0078D7;
+        }
+        
+        input:checked + .metro-switch-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .metro-select {
+            background: #404040;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px 15px;
+            font-size: 14px;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .metro-select:focus {
+            outline: none;
+            border-color: #0078D7;
+            box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.3);
+        }
+        
+        .metro-input {
+            background: #404040;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px 15px;
+            font-size: 14px;
+            min-width: 200px;
+            transition: all 0.2s;
+        }
+        
+        .metro-input:focus {
+            outline: none;
+            border-color: #0078D7;
+            box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.3);
+        }
+        
+        .source-status {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 10px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .source-excellent { background: #107C10; color: white; }
+        .source-good { background: #0078D7; color: white; }
+        .source-medium { background: #FF8C00; color: white; }
+        .source-slow { background: #FF4343; color: white; }
+        .source-unknown { background: #666; color: white; }
+        
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .source-widget { border-left-color: #0078D7; }
+        .source-msstore { border-left-color: #FF4343; }
+        
+        .source-info {
+            flex: 1;
+        }
+        
+        .source-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #FFFFFF;
+        }
+        
+        .source-info p {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .source-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .test-source-btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-source-btn:hover {
+            background: #555;
+        }
+        
+        .test-source-btn.testing {
+            background: #0078D7;
+            cursor: not-allowed;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online { background: #107C10; }
+        .status-offline { background: #FF4343; }
+        .status-testing { background: #FF8C00; animation: pulse 1s infinite; }
+        
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 8px;
+        }
+        
+        .shortcut-label {
+            font-size: 14px;
+            color: #E0E0E0;
+        }
+        
+        .shortcut-keys {
+            background: #404040;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            color: #FFFFFF;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #404040;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 300;
+            color: #0078D7;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .cache-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .danger-zone {
+            border: 2px solid #FF4343;
+            background: rgba(255, 67, 67, 0.1);
+        }
+        
+        .danger-zone .section-title {
+            color: #FF4343;
+        }
+        
+        .metro-btn.danger {
+            background: #FF4343;
+        }
+        
+        .metro-btn.danger:hover {
+            background: #E63E3E;
+        }
+        
+        .warning-text {
+            color: #FF8C00;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2D2D2D;
+            padding: 15px 20px;
+            border-left: 4px solid #0078D7;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .notification.show {
+            display: block;
+        }
+        
+        .notification.success { border-left-color: #107C10; }
+        .notification.error { border-left-color: #FF4343; }
+        .notification.warning { border-left-color: #FF8C00; }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .notification-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-message {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .settings-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #404040;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <div class="hamburger-menu" id="hamburgerMenu">
+        <div class="menu-header">
+            <div class="menu-title">PkgHub</div>
+            <button class="menu-close" onclick="toggleMenu()">×</button>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">主要功能</div>
+            <div class="menu-item active" onclick="goHome()">
+                <div class="menu-icon">🏠</div>
+                <div class="menu-text">首页</div>
+            </div>
+            <div class="menu-item" onclick="openSettings()">
+                <div class="menu-icon">⚙️</div>
+                <div class="menu-text">设置</div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">快速分类</div>
+            <div class="menu-item" onclick="browseCategory('popular')">
+                <div class="menu-icon">🔥</div>
+                <div class="menu-text">热门推荐</div>
+            </div>
+            <div class="menu-item" onclick="browseCategory('browser')">
+                <div class="menu-icon">🌐</div>
+                <div class="menu-text">浏览器</div>
+            </div>
+            <div class="menu-item" onclick="browseCategory('dev')">
+                <div class="menu-icon">💻</div>
+                <div class="menu-text">开发工具</div>
+            </div>
+            <div class="menu-item" onclick="browseCategory('chinese')">
+                <div class="menu-icon">🇨🇳</div>
+                <div class="menu-text">国内软件</div>
+            </div>
+            <div class="menu-item" onclick="browseCategory('media')">
+                <div class="menu-icon">🎵</div>
+                <div class="menu-text">媒体播放</div>
+            </div>
+            <div class="menu-item" onclick="browseCategory('game')">
+                <div class="menu-icon">🎮</div>
+                <div class="menu-text">游戏</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <button class="menu-toggle" onclick="toggleMenu()">
+                ☰
+            </button>
+            <h1 class="main-title">Pkg<span class="plus">Hub</span></h1>
+            <p class="subtitle">WinGet加强版（？</p>
+            
+            <div class="search-section">
+                <div class="search-box">
+                    <input type="text" 
+                           class="metro-input" 
+                           id="searchInput" 
+                           placeholder="输入软件名称搜索..."
+                           autocomplete="off">
+                    <button class="metro-btn" onclick="search()">
+                        🔍搜索
+                    </button>
+                    <div class="suggestions-container" id="suggestions"></div>
+                </div>
+                <div class="search-tags" id="searchTags">
+                    <span class="search-tag" onclick="suggestSearch('browser')">浏览器</span>
+                    <span class="search-tag" onclick="suggestSearch('editor')">编辑器</span>
+                    <span class="search-tag" onclick="suggestSearch('music')">音乐</span>
+                    <span class="search-tag" onclick="suggestSearch('video')">视频</span>
+                    <span class="search-tag" onclick="suggestSearch('game')">游戏</span>
+                    <span class="search-tag" onclick="suggestSearch('dev')">开发工具</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="breadcrumb">
+        </div>
+        
+        <div id="content">
+        </div>
+        
+        <div class="metro-footer">
+            <p>PkgHub • 基于 Electron 19 • 兼容 Windows 7/8/10/11</p>
+        </div>
+    </div>
+    
+    <div class="metro-progress" id="progressContainer">
+        <div class="progress-header">
+            <span id="progressTitle">正在安装...</span>
+            <span id="progressStatus">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-message" id="progressMessage"></div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <div class="notification-header">
+            <span class="notification-title" id="notificationTitle">通知标题</span>
+            <button class="notification-close" onclick="hideNotification()">×</button>
+        </div>
+        <div class="notification-message" id="notificationMessage">通知内容</div>
+    </div>
+    
+    <script>
+        let currentCategory = '';
+        let installingApps = new Set();
+        let currentView = 'home';
+        let searchTimeout = null;
+        let isPopularAppsLoaded = false;
+        
+        const defaultPopularApps = [
+            { id: 'Microsoft.Edge', name: 'Microsoft Edge', version: '最新', source: 'winget' },
+            { id: 'Google.Chrome', name: 'Google Chrome', version: '最新', source: 'winget' },
+            { id: 'Mozilla.Firefox', name: 'Mozilla Firefox', version: '最新', source: 'winget' },
+            { id: 'Microsoft.VisualStudioCode', name: 'Visual Studio Code', version: '最新', source: 'winget' },
+            { id: '7zip.7zip', name: '7-Zip', version: '最新', source: 'winget' },
+            { id: 'VideoLAN.VLC', name: 'VLC Media Player', version: '最新', source: 'winget' }
+        ];
+        
+        let appConfig = {};
+        let originalConfig = {};
+        let currentSettingsTab = 'general';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') search();
+            });
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                if (query.length > 0) {
+                    showSearchSuggestions(query);
+                } else {
+                    hideSearchSuggestions();
+                }
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                setTimeout(() => hideSearchSuggestions(), 200);
+            });
+            
+            searchInput.addEventListener('focus', () => {
+                const query = searchInput.value.trim();
+                if (query.length > 0) {
+                    showSearchSuggestions(query);
+                }
+            });
+            
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    hideSearchSuggestions();
+                    searchInput.value = '';
+                } else if (e.key === 'Tab') {
+                    hideSearchSuggestions();
+                }
+            });
+            
+            window.electronAPI.onInstallProgress((data) => {
+                updateInstallProgress(data);
+            });
+            
+            window.electronAPI.onWingetStatus((data) => {
+                if (!data.ok) {
+                    console.warn('Winget 状态异常:', data.error);
+                }
+            });
+            
+            window.electronAPI.onSettingsUpdate((config) => {
+                appConfig = config;
+                updateUIFromConfig();
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === ',') {
+                    e.preventDefault();
+                    openSettings();
+                }
+                if (e.ctrlKey && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                if (e.ctrlKey && e.key === 'q') {
+                    e.preventDefault();
+                    window.electronAPI.quitApp();
+                }
+            });
+            
+            loadSettings();
+            showHomePage();
+        });
+        
+        function toggleMenu() {
+            const menu = document.getElementById('hamburgerMenu');
+            const overlay = document.getElementById('menuOverlay');
+            
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+        
+        async function loadSettings() {
+            try {
+                appConfig = await window.electronAPI.getAppConfig();
+                originalConfig = JSON.parse(JSON.stringify(appConfig));
+            } catch (error) {
+                console.error('加载设置失败:', error);
+                showNotification('error', '加载失败', '无法加载应用设置');
+            }
+        }
+        
+        function updateUIFromConfig() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const searchSuggestionsToggle = document.getElementById('searchSuggestionsToggle');
+            const sourceSwitcherToggle = document.getElementById('sourceSwitcherToggle');
+            const autoSourceToggle = document.getElementById('autoSourceToggle');
+            const batchSizeSelect = document.getElementById('batchSizeSelect');
+            const silentInstallToggle = document.getElementById('silentInstallToggle');
+            const soundEffectsToggle = document.getElementById('soundEffectsToggle');
+            const installNotificationsToggle = document.getElementById('installNotificationsToggle');
+            const autoUpdateToggle = document.getElementById('autoUpdateToggle');
+            const preloadPopularToggle = document.getElementById('preloadPopularToggle');
+            const categoryLimitSelect = document.getElementById('categoryLimitSelect');
+            const searchLimitSelect = document.getElementById('searchLimitSelect');
+            const defaultSourceSelect = document.getElementById('defaultSourceSelect');
+            const msstoreToggle = document.getElementById('msstoreToggle');
+            const chinaAutoSwitchToggle = document.getElementById('chinaAutoSwitchToggle');
+            const shortcutsEnabledToggle = document.getElementById('shortcutsEnabledToggle');
+            const shortcutsSchemeSelect = document.getElementById('shortcutsSchemeSelect');
+            const experimentalToggle = document.getElementById('experimentalToggle');
+            const verboseLoggingToggle = document.getElementById('verboseLoggingToggle');
+            
+            if (darkModeToggle) darkModeToggle.checked = appConfig.theme === 'dark';
+            if (searchSuggestionsToggle) searchSuggestionsToggle.checked = appConfig.enableSearchSuggestions !== false;
+            if (sourceSwitcherToggle) sourceSwitcherToggle.checked = appConfig.showSourceSwitcher !== false;
+            if (autoSourceToggle) autoSourceToggle.checked = appConfig.autoSource === true;
+            if (batchSizeSelect) batchSizeSelect.value = appConfig.batchSize || 3;
+            if (silentInstallToggle) silentInstallToggle.checked = appConfig.silentInstall !== false;
+            if (soundEffectsToggle) soundEffectsToggle.checked = appConfig.enableSounds === true;
+            if (installNotificationsToggle) installNotificationsToggle.checked = appConfig.installNotifications !== false;
+            if (autoUpdateToggle) autoUpdateToggle.checked = appConfig.autoCheckUpdates !== false;
+            if (preloadPopularToggle) preloadPopularToggle.checked = true;
+            if (categoryLimitSelect) categoryLimitSelect.value = appConfig.categorySearchLimit || 40;
+            if (searchLimitSelect) searchLimitSelect.value = 50;
+            
+            if (defaultSourceSelect) {
+                if (appConfig.downloadSource === 'auto' || appConfig.autoSource === true) {
+                    defaultSourceSelect.value = 'auto';
+                } else {
+                    defaultSourceSelect.value = appConfig.downloadSource || 'winget';
+                }
+            }
+            
+            if (msstoreToggle) {
+                const msstoreSource = appConfig.sources?.find(s => s.id === 'msstore');
+                msstoreToggle.checked = msstoreSource ? msstoreSource.enabled : false;
+            }
+            
+            if (chinaAutoSwitchToggle) chinaAutoSwitchToggle.checked = true;
+            if (shortcutsEnabledToggle) shortcutsEnabledToggle.checked = true;
+            if (shortcutsSchemeSelect) shortcutsSchemeSelect.value = 'default';
+            if (experimentalToggle) experimentalToggle.checked = false;
+            if (verboseLoggingToggle) verboseLoggingToggle.checked = false;
+        }
+        
+        function openSettings() {
+            toggleMenu();
+            currentView = 'settings';
+            
+            const breadcrumb = document.getElementById('breadcrumb');
+            breadcrumb.innerHTML = `
+                <button class="back-btn" onclick="showHomePage()">← 返回首页</button>
+            `;
+            
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <div class="settings-container">
+                    <div class="settings-header">
+                        <h1 class="settings-title">PkgHub 设置</h1>
+                        <p class="settings-subtitle">自定义你的软件管理体验</p>
+                    </div>
+                    
+                    <div class="settings-tabs">
+                        <button class="settings-tab active" onclick="showSettingsTab('general')">
+                            ⚙️ 常规设置
+                        </button>
+                        <button class="settings-tab" onclick="showSettingsTab('sources')">
+                            🌐 下载源
+                        </button>
+                        <button class="settings-tab" onclick="showSettingsTab('shortcuts')">
+                            ⌨️ 快捷键
+                        </button>
+                        <button class="settings-tab" onclick="showSettingsTab('performance')">
+                            🚀 性能
+                        </button>
+                        <button class="settings-tab" onclick="showSettingsTab('about')">
+                            ℹ️ 关于
+                        </button>
+                    </div>
+                    
+                    <div id="generalTab" class="settings-content active">
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">🎨</span>
+                                外观与界面
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>深色模式</h3>
+                                        <p>使用深色界面主题，适合夜间使用</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="darkModeToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>显示搜索建议</h3>
+                                        <p>在搜索时显示实时建议</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="searchSuggestionsToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>显示下载源</h3>
+                                        <p>在应用卡片上显示下载源状态</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="sourceSwitcherToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">⚡</span>
+                                安装与下载
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>自动选择最快源</h3>
+                                        <p>根据测速结果自动选择最佳下载源</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="autoSourceToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>批量安装数量</h3>
+                                        <p>同时安装的最大软件数量</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="metro-select" id="batchSizeSelect">
+                                            <option value="1">1个</option>
+                                            <option value="2">2个</option>
+                                            <option value="3" selected>3个</option>
+                                            <option value="5">5个</option>
+                                            <option value="10">10个</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>静默安装</h3>
+                                        <p>安装时不显示确认对话框</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="silentInstallToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">🔔</span>
+                                通知与声音
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>启用声音效果</h3>
+                                        <p>操作时播放音效</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="soundEffectsToggle">
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>安装完成通知</h3>
+                                        <p>软件安装完成后显示通知</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="installNotificationsToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>自动检查更新</h3>
+                                        <p>启动时自动检查应用更新</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="autoUpdateToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="sourcesTab" class="settings-content">
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">📦</span>
+                                软件源管理
+                            </h2>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>默认下载源</h3>
+                                    <p>优先使用的软件下载源</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="metro-select" id="defaultSourceSelect">
+                                        <option value="winget">Windows Package Manager</option>
+                                        <option value="msstore">微软商店 (国内CDN加速)</option>
+                                        <option value="auto">自动选择最快</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="sourcesList" class="settings-group">
+                                <div class="source-item source-widget">
+                                    <div class="source-info">
+                                        <h4>
+                                            <span class="status-indicator status-online"></span>
+                                            Windows Package Manager
+                                            <span class="source-status source-excellent">极快</span>
+                                        </h4>
+                                        <p>微软官方软件源，包含绝大多数常用软件</p>
+                                    </div>
+                                    <div class="source-actions">
+                                        <button class="test-source-btn" onclick="testSource('winget', this)">
+                                            测速
+                                        </button>
+                                        <label class="metro-switch">
+                                            <input type="checkbox" checked disabled>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="source-item source-msstore">
+                                    <div class="source-info">
+                                        <h4>
+                                            <span class="status-indicator status-online"></span>
+                                            微软商店源
+                                            <span class="source-status source-good">快速</span>
+                                        </h4>
+                                        <p>国内CDN加速，适合下载国内软件如微信、QQ等</p>
+                                    </div>
+                                    <div class="source-actions">
+                                        <button class="test-source-btn" onclick="testSource('msstore', this)">
+                                            测速
+                                        </button>
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="msstoreToggle">
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>国内软件自动切换</h3>
+                                    <p>检测到国内软件时自动使用微软商店源</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="metro-switch">
+                                        <input type="checkbox" id="chinaAutoSwitchToggle" checked>
+                                        <span class="metro-switch-slider"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">📊</span>
+                                源状态监控
+                            </h2>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="wingetSpeed">156ms</div>
+                                    <div class="stat-label">Winget响应时间</div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-value" id="msstoreSpeed">432ms</div>
+                                    <div class="stat-label">微软商店响应时间</div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-value" id="lastTestTime">5分钟前</div>
+                                    <div class="stat-label">最后测速时间</div>
+                                </div>
+                            </div>
+                            
+                            <div class="cache-actions">
+                                <button class="metro-btn secondary" onclick="testAllSources()">
+                                    全部测速
+                                </button>
+                                <button class="metro-btn" onclick="optimizeSources()">
+                                    优化设置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="shortcutsTab" class="settings-content">
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">⌨️</span>
+                                键盘快捷键
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">搜索软件</div>
+                                    <div class="shortcut-keys">Ctrl + F</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">安装选中软件</div>
+                                    <div class="shortcut-keys">Ctrl + I</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">打开设置</div>
+                                    <div class="shortcut-keys">Ctrl + ,</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">返回首页</div>
+                                    <div class="shortcut-keys">Esc</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">刷新页面</div>
+                                    <div class="shortcut-keys">F5</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">开发者工具</div>
+                                    <div class="shortcut-keys">F12</div>
+                                </div>
+                                
+                                <div class="shortcut-item">
+                                    <div class="shortcut-label">退出应用</div>
+                                    <div class="shortcut-keys">Ctrl + Q</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">🎮</span>
+                                自定义快捷键
+                            </h2>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>启用快捷键</h3>
+                                    <p>启用全局键盘快捷键</p>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="metro-switch">
+                                        <input type="checkbox" id="shortcutsEnabledToggle" checked>
+                                        <span class="metro-switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>快捷键方案</h3>
+                                    <p>选择快捷键配置方案</p>
+                                </div>
+                                <div class="setting-control">
+                                    <select class="metro-select" id="shortcutsSchemeSelect">
+                                        <option value="default" selected>默认方案</option>
+                                        <option value="vscode">VS Code风格</option>
+                                        <option value="windows">Windows标准</option>
+                                        <option value="custom">自定义</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="performanceTab" class="settings-content">
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">💾</span>
+                                缓存管理
+                            </h2>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="searchCacheCount">128</div>
+                                    <div class="stat-label">搜索缓存项</div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-value" id="categoryCacheCount">6</div>
+                                    <div class="stat-label">分类缓存</div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-value" id="cacheSize">2.4MB</div>
+                                    <div class="stat-label">缓存大小</div>
+                                </div>
+                            </div>
+                            
+                            <div class="cache-actions">
+                                <button class="metro-btn secondary" onclick="clearSearchCache()">
+                                    清除搜索缓存
+                                </button>
+                                <button class="metro-btn secondary" onclick="clearCategoryCache()">
+                                    清除分类缓存
+                                </button>
+                                <button class="metro-btn" onclick="clearAllCache()">
+                                    清除所有缓存
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">⚡</span>
+                                性能优化
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>预加载热门应用</h3>
+                                        <p>启动时预加载热门推荐列表</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="preloadPopularToggle" checked>
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>分类搜索限制</h3>
+                                        <p>每个分类显示的最大应用数量</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="metro-select" id="categoryLimitSelect">
+                                            <option value="20">20个</option>
+                                            <option value="30" selected>30个</option>
+                                            <option value="40">40个</option>
+                                            <option value="50">50个</option>
+                                            <option value="100">100个</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>搜索结果限制</h3>
+                                        <p>每次搜索显示的最大结果数量</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="metro-select" id="searchLimitSelect">
+                                            <option value="20">20个</option>
+                                            <option value="30">30个</option>
+                                            <option value="50" selected>50个</option>
+                                            <option value="100">100个</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section danger-zone">
+                            <h2 class="section-title">
+                                <span class="icon">⚠️</span>
+                                高级设置
+                            </h2>
+                            
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>实验性功能</h3>
+                                        <p>启用正在开发的新功能（可能不稳定）（还没做呢这玩意）</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="experimentalToggle">
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <h3>详细日志记录</h3>
+                                        <p>记录详细的操作日志（影响性能）（这玩意我也没做）</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="metro-switch">
+                                            <input type="checkbox" id="verboseLoggingToggle">
+                                            <span class="metro-switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cache-actions">
+                                <button class="metro-btn danger" onclick="resetToDefaults()">
+                                    恢复默认设置
+                                </button>
+                                <button class="metro-btn secondary" onclick="exportSettings()">
+                                    导出设置
+                                </button>
+                                <button class="metro-btn secondary" onclick="importSettings()">
+                                    导入设置
+                                </button>
+                            </div>
+                            
+                            <p class="warning-text">⚠️ 恢复默认设置将清除所有自定义配置</p>
+                        </div>
+                    </div>
+                    
+                    <div id="aboutTab" class="settings-content">
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">ℹ️</span>
+                                关于 PkgHub
+                            </h2>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>版本信息</h3>
+                                    <p>
+                                        <strong>当前版本：</strong> <span id="appVersion">1.0.1</span><br>
+                                        <strong>Electron：</strong> <span id="electronVersion">19.1.9</span><br>
+                                        <strong>构建日期：</strong> <span id="buildDate">2026-02-09</span>
+                                    </p>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="metro-btn" onclick="checkForUpdates()">
+                                        检查更新
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>系统信息</h3>
+                                    <p>
+                                        <strong>操作系统：</strong> <span id="osInfo">Windows</span><br>
+                                        <strong>Winget 版本：</strong> <span id="wingetVersion">未知</span><br>
+                                        <strong>硬件架构：</strong> <span id="architecture">x64</span>
+                                    </p>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="metro-btn secondary" onclick="copySystemInfo()">
+                                        复制信息
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <h3>使用统计</h3>
+                                    <p>
+                                        <strong>已安装软件：</strong> <span id="installedCount">未知</span> 个<br>
+                                        <strong>搜索次数：</strong> <span id="searchCount">未知</span> 次<br>
+                                        <strong>运行时间：</strong> <span id="uptime">未知（好吧其实是懒得统计了）</span>
+                                    </p>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="metro-btn secondary" onclick="resetStatistics()">
+                                        重置统计
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h2 class="section-title">
+                                <span class="icon">🔗</span>
+                                链接与支持
+                            </h2>
+                            
+                            <div class="settings-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <button class="metro-btn secondary" onclick="openLink('github')">
+                                    GitHub 仓库
+                                </button>
+                                <button class="metro-btn secondary" onclick="openLink('issues')">
+                                    报告问题
+                                </button>
+                                <button class="metro-btn secondary" onclick="openLink('docs')">
+                                    使用文档
+                                </button>
+                                <button class="metro-btn secondary" onclick="openLink('feedback')">
+                                    意见反馈
+                                </button>
+                            </div>
+                            
+                            <div class="setting-item" style="margin-top: 20px;">
+                                <div class="setting-label">
+                                    <h3>开源协议</h3>
+                                    <p>PkgHub 基于 MIT 协议开源，欢迎贡献代码和反馈建议。</p>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="metro-btn secondary" onclick="showLicense()">
+                                        查看协议
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-footer">
+                        <button class="metro-btn secondary" onclick="cancelSettings()">
+                            取消
+                        </button>
+                        <button class="metro-btn" onclick="saveSettings()">
+                            保存设置
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            updateUIFromConfig();
+            showSettingsTab('general');
+            updateSettingsStats();
+        }
+        
+        function showSettingsTab(tabId) {
+            currentSettingsTab = tabId;
+            
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.settings-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const activeTab = document.querySelector(`.settings-tab[onclick*="${tabId}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            const activeContent = document.getElementById(`${tabId}Tab`);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+        }
+        
+        async function updateSettingsStats() {
+            try {
+                const stats = await window.electronAPI.getAppStats();
+                
+                const searchCacheCount = document.getElementById('searchCacheCount');
+                const categoryCacheCount = document.getElementById('categoryCacheCount');
+                const cacheSize = document.getElementById('cacheSize');
+                const installedCount = document.getElementById('installedCount');
+                const searchCount = document.getElementById('searchCount');
+                const uptime = document.getElementById('uptime');
+                
+                if (searchCacheCount) searchCacheCount.textContent = stats.searchCacheCount || 0;
+                if (categoryCacheCount) categoryCacheCount.textContent = stats.categoryCacheCount || 0;
+                if (cacheSize) cacheSize.textContent = stats.cacheSize || '0KB';
+                if (installedCount) installedCount.textContent = stats.installedCount || 0;
+                if (searchCount) searchCount.textContent = stats.searchCount || 0;
+                if (uptime) uptime.textContent = stats.uptime || '0小时';
+                
+                const appVersion = await window.electronAPI.getAppVersion();
+                const appVersionElement = document.getElementById('appVersion');
+                const electronVersionElement = document.getElementById('electronVersion');
+                
+                if (appVersionElement) appVersionElement.textContent = appVersion.version || '0.1.0';
+                if (electronVersionElement) electronVersionElement.textContent = appVersion.electron || '19.1.9';
+                
+                const systemInfo = await window.electronAPI.getSystemInfo();
+                const osInfoElement = document.getElementById('osInfo');
+                const architectureElement = document.getElementById('architecture');
+                
+                if (osInfoElement) osInfoElement.textContent = systemInfo.platform || 'Windows';
+                if (architectureElement) architectureElement.textContent = systemInfo.arch || 'x64';
+                
+                const wingetInfo = await window.electronAPI.getWingetInfo();
+                const wingetVersionElement = document.getElementById('wingetVersion');
+                if (wingetVersionElement) wingetVersionElement.textContent = wingetInfo.version || '未知';
+                
+            } catch (error) {
+                console.error('更新统计信息失败:', error);
+            }
+        }
+        
+        async function testSource(sourceId, button) {
+            const originalText = button.textContent;
+            button.classList.add('testing');
+            button.textContent = '测速中...';
+            button.disabled = true;
+            
+            try {
+                const result = await window.electronAPI.testSourceSpeed(sourceId);
+                
+                if (result.success) {
+                    const rating = result.rating || { level: 'unknown', text: '未知' };
+                    const statusElement = document.querySelector(`.source-item.source-${sourceId} .source-status`);
+                    
+                    if (statusElement) {
+                        statusElement.className = 'source-status source-' + rating.level;
+                        statusElement.textContent = rating.text;
+                    }
+                    
+                    const indicator = document.querySelector(`.source-item.source-${sourceId} .status-indicator`);
+                    if (indicator) {
+                        indicator.className = 'status-indicator status-online';
+                    }
+                    
+                    updateSourceStats(sourceId, result.speed);
+                    showNotification('success', '测速成功', `${sourceId} 源响应时间: ${result.speed}ms`);
+                } else {
+                    showNotification('error', '测速失败', result.error || '无法连接到该软件源');
+                    
+                    const indicator = document.querySelector(`.source-item.source-${sourceId} .status-indicator`);
+                    if (indicator) {
+                        indicator.className = 'status-indicator status-offline';
+                    }
+                }
+            } catch (error) {
+                console.error('测速失败:', error);
+                showNotification('error', '测速失败', '测速过程中出现错误');
+            } finally {
+                button.classList.remove('testing');
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+        
+        async function testAllSources() {
+            const buttons = document.querySelectorAll('.test-source-btn');
+            for (const button of buttons) {
+                const sourceId = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+                await testSource(sourceId, button);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+        
+        function optimizeSources() {
+            const fastestSource = getFastestSource();
+            
+            if (fastestSource) {
+                const defaultSourceSelect = document.getElementById('defaultSourceSelect');
+                if (defaultSourceSelect) {
+                    defaultSourceSelect.value = fastestSource.id;
+                    showNotification('success', '优化完成', `已设置 ${fastestSource.name} 为默认下载源`);
+                }
+            } else {
+                showNotification('info', '优化完成', '已根据测速结果优化源设置');
+            }
+        }
+        
+        function getFastestSource() {
+            const wingetSpeedElement = document.getElementById('wingetSpeed');
+            const msstoreSpeedElement = document.getElementById('msstoreSpeed');
+            
+            if (!wingetSpeedElement || !msstoreSpeedElement) return null;
+            
+            const wingetSpeed = parseInt(wingetSpeedElement.textContent) || 9999;
+            const msstoreSpeed = parseInt(msstoreSpeedElement.textContent) || 9999;
+            
+            if (wingetSpeed <= msstoreSpeed) {
+                return { id: 'winget', name: 'Windows Package Manager' };
+            } else {
+                return { id: 'msstore', name: '微软商店源' };
+            }
+        }
+        
+        function updateSourceStats(sourceId, speed) {
+            if (sourceId === 'winget') {
+                const wingetSpeedElement = document.getElementById('wingetSpeed');
+                if (wingetSpeedElement) wingetSpeedElement.textContent = speed + 'ms';
+            } else if (sourceId === 'msstore') {
+                const msstoreSpeedElement = document.getElementById('msstoreSpeed');
+                if (msstoreSpeedElement) msstoreSpeedElement.textContent = speed + 'ms';
+            }
+            
+            const lastTestTimeElement = document.getElementById('lastTestTime');
+            if (lastTestTimeElement) lastTestTimeElement.textContent = '刚刚';
+        }
+        
+        async function clearSearchCache() {
+            try {
+                await window.electronAPI.clearCache('search');
+                showNotification('success', '缓存清理', '搜索缓存已清除');
+                updateSettingsStats();
+            } catch (error) {
+                showNotification('error', '清理失败', '清除搜索缓存时出错');
+            }
+        }
+        
+        async function clearCategoryCache() {
+            try {
+                await window.electronAPI.clearCache('category');
+                showNotification('success', '缓存清理', '分类缓存已清除');
+                updateSettingsStats();
+            } catch (error) {
+                showNotification('error', '清理失败', '清除分类缓存时出错');
+            }
+        }
+        
+        async function clearAllCache() {
+            try {
+                await window.electronAPI.clearCache('all');
+                showNotification('success', '缓存清理', '所有缓存已清除');
+                updateSettingsStats();
+            } catch (error) {
+                showNotification('error', '清理失败', '清除缓存时出错');
+            }
+        }
+        
+        function resetToDefaults() {
+            if (confirm('确定要恢复所有默认设置吗？此操作无法撤销。')) {
+                window.electronAPI.resetSettings()
+                    .then(() => {
+                        showNotification('success', '重置成功', '设置已恢复为默认值');
+                        setTimeout(() => {
+                            loadSettings();
+                            updateUIFromConfig();
+                        }, 1000);
+                    })
+                    .catch(error => {
+                        showNotification('error', '重置失败', error.message);
+                    });
+            }
+        }
+        
+        function exportSettings() {
+            window.electronAPI.exportSettings()
+                .then(result => {
+                    if (result.success) {
+                        showNotification('success', '导出成功', '设置已导出到文件');
+                    } else {
+                        showNotification('error', '导出失败', result.error);
+                    }
+                })
+                .catch(error => {
+                    showNotification('error', '导出失败', error.message);
+                });
+        }
+        
+        function importSettings() {
+            window.electronAPI.importSettings()
+                .then(result => {
+                    if (result.success) {
+                        showNotification('success', '导入成功', '设置已从文件导入');
+                        setTimeout(() => {
+                            loadSettings();
+                            updateUIFromConfig();
+                        }, 1000);
+                    } else {
+                        showNotification('error', '导入失败', result.error);
+                    }
+                })
+                .catch(error => {
+                    showNotification('error', '导入失败', error.message);
+                });
+        }
+        
+        function checkForUpdates() {
+            window.electronAPI.checkForUpdates()
+                .then(result => {
+                    if (result.updateAvailable) {
+                        showNotification('success', '更新可用', `发现新版本 ${result.latestVersion}`);
+                    } else {
+                        showNotification('info', '检查完成', '当前已是最新版本');
+                    }
+                })
+                .catch(error => {
+                    showNotification('error', '检查失败', '无法检查更新：' + error.message);
+                });
+        }
+        
+        function copySystemInfo() {
+            const osInfoElement = document.getElementById('osInfo');
+            const wingetVersionElement = document.getElementById('wingetVersion');
+            const architectureElement = document.getElementById('architecture');
+            const appVersionElement = document.getElementById('appVersion');
+            
+            if (!osInfoElement || !wingetVersionElement || !architectureElement || !appVersionElement) return;
+            
+            const os = osInfoElement.textContent;
+            const winget = wingetVersionElement.textContent;
+            const arch = architectureElement.textContent;
+            const version = appVersionElement.textContent;
+            
+            const text = `PkgHub ${version}\n操作系统: ${os}\nWinget版本: ${winget}\n架构: ${arch}`;
+            
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    showNotification('success', '复制成功', '系统信息已复制到剪贴板');
+                })
+                .catch(() => {
+                    showNotification('error', '复制失败', '无法复制到剪贴板');
+                });
+        }
+        
+        function resetStatistics() {
+            if (confirm('确定要重置使用统计吗？此操作无法撤销。')) {
+                window.electronAPI.resetStatistics()
+                    .then(() => {
+                        showNotification('success', '重置成功', '使用统计已重置');
+                        updateSettingsStats();
+                    })
+                    .catch(error => {
+                        showNotification('error', '重置失败', error.message);
+                    });
+            }
+        }
+        
+        function openLink(type) {
+            const urls = {
+                github: 'https://github.com/Maresoft365/pkg-hub',
+                issues: 'https://github.com/Maresoft365/pkg-hub/issues',
+                docs: 'https://github.com/Maresoft365/pkg-hub/wiki',
+                feedback: 'https://github.com/Maresoft365/pkg-hub/discussions'
+            };
+            
+            if (urls[type]) {
+                window.electronAPI.openExternal(urls[type]);
+            }
+        }
+        
+        function showLicense() {
+            window.electronAPI.showLicense();
+        }
+        
+        function showNotification(type, title, message) {
+            const notification = document.getElementById('notification');
+            const titleElement = document.getElementById('notificationTitle');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            notification.className = 'notification ' + type;
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                hideNotification();
+            }, 5000);
+        }
+        
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.classList.remove('show');
+            }
+        }
+        
+        function cancelSettings() {
+            if (hasSettingsChanges()) {
+                if (confirm('有未保存的更改，确定要取消吗？')) {
+                    showHomePage();
+                }
+            } else {
+                showHomePage();
+            }
+        }
+        
+        async function saveSettings() {
+            const msstoreEnabled = document.getElementById('msstoreToggle').checked;
+            
+            const newConfig = {
+                theme: document.getElementById('darkModeToggle').checked ? 'dark' : 'light',
+                enableSearchSuggestions: document.getElementById('searchSuggestionsToggle').checked,
+                showSourceSwitcher: document.getElementById('sourceSwitcherToggle').checked,
+                downloadSource: document.getElementById('autoSourceToggle').checked ? 'auto' : document.getElementById('defaultSourceSelect').value,
+                batchSize: parseInt(document.getElementById('batchSizeSelect').value),
+                silentInstall: document.getElementById('silentInstallToggle').checked,
+                enableSounds: document.getElementById('soundEffectsToggle').checked,
+                installNotifications: document.getElementById('installNotificationsToggle').checked,
+                autoCheckUpdates: document.getElementById('autoUpdateToggle').checked,
+                categorySearchLimit: parseInt(document.getElementById('categoryLimitSelect').value),
+                msstoreEnabled: msstoreEnabled,
+                autoSource: document.getElementById('autoSourceToggle').checked
+            };
+            
+            try {
+                await window.electronAPI.updateAppConfig(newConfig);
+                showNotification('success', '保存成功', '设置已保存');
+                
+                originalConfig = JSON.parse(JSON.stringify(appConfig));
+                
+                setTimeout(() => {
+                    showHomePage();
+                }, 1000);
+            } catch (error) {
+                showNotification('error', '保存失败', error.message);
+            }
+        }
+        
+        function hasSettingsChanges() {
+            const msstoreEnabled = document.getElementById('msstoreToggle').checked;
+            
+            const currentConfig = {
+                theme: document.getElementById('darkModeToggle').checked ? 'dark' : 'light',
+                enableSearchSuggestions: document.getElementById('searchSuggestionsToggle').checked,
+                showSourceSwitcher: document.getElementById('sourceSwitcherToggle').checked,
+                downloadSource: document.getElementById('autoSourceToggle').checked ? 'auto' : document.getElementById('defaultSourceSelect').value,
+                batchSize: parseInt(document.getElementById('batchSizeSelect').value),
+                silentInstall: document.getElementById('silentInstallToggle').checked,
+                enableSounds: document.getElementById('soundEffectsToggle').checked,
+                installNotifications: document.getElementById('installNotificationsToggle').checked,
+                autoCheckUpdates: document.getElementById('autoUpdateToggle').checked,
+                categorySearchLimit: parseInt(document.getElementById('categoryLimitSelect').value),
+                msstoreEnabled: msstoreEnabled,
+                autoSource: document.getElementById('autoSourceToggle').checked
+            };
+            
+            return JSON.stringify(currentConfig) !== JSON.stringify(originalConfig);
+        }
+        
+        function openInstalledApps() {
+            toggleMenu();
+            window.electronAPI.openInstalledApps();
+        }
+        
+        function showAbout() {
+            toggleMenu();
+            window.electronAPI.showLicense();
+        }
+        
+        async function showSearchSuggestions(query) {
+            if (!query || query.length < 1) {
+                hideSearchSuggestions();
+                return;
+            }
+            
+            try {
+                const suggestions = await window.electronAPI.getSearchSuggestions(query);
+                const container = document.getElementById('suggestions');
+                
+                if (suggestions && suggestions.length > 0) {
+                    let html = '';
+                    suggestions.forEach(suggestion => {
+                        html += `
+                            <div class="suggestion-item" onclick="selectSuggestion('${suggestion.name}', '${suggestion.id}')">
+                                <div class="suggestion-name">${suggestion.name}</div>
+                                <div class="suggestion-id">${suggestion.id}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    container.innerHTML = html;
+                    container.classList.add('show');
+                } else {
+                    hideSearchSuggestions();
+                }
+            } catch (error) {
+                console.error('获取搜索建议失败:', error);
+                hideSearchSuggestions();
+            }
+        }
+        
+        function hideSearchSuggestions() {
+            const container = document.getElementById('suggestions');
+            container.classList.remove('show');
+        }
+        
+        function selectSuggestion(name, id) {
+            document.getElementById('searchInput').value = name;
+            hideSearchSuggestions();
+            search();
+        }
+        
+        function suggestSearch(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            search();
+        }
+        
+        async function search() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            
+            hideSearchSuggestions();
+            showLoading('搜索中...');
+            
+            try {
+                const apps = await window.electronAPI.searchApps(query);
+                if (apps && apps.length > 0) {
+                    displayApps(apps, `"${query}" 的搜索结果`);
+                } else {
+                    showEmptyState(`"${query}" 的搜索结果`, '未找到相关软件，尝试其他关键词。');
+                }
+            } catch (error) {
+                console.error('搜索失败:', error);
+                showError('搜索失败，请检查网络连接。');
+            }
+        }
+        
+        async function browseCategory(category) {
+            console.log('[FRONTEND] 浏览分类:', category);
+            currentCategory = category;
+            
+            const categoryNames = {
+                'popular': '热门推荐',
+                'browser': '浏览器',
+                'dev': '开发工具',
+                'chinese': '国内软件',
+                'media': '媒体播放',
+                'game': '游戏',
+                'tools': '实用工具'
+            };
+            
+            const categoryTitle = categoryNames[category] || '分类';
+            
+            showLoading(`加载${categoryTitle}...`);
+            
+            try {
+                const apps = await window.electronAPI.browseCategory(category);
+                console.log('[FRONTEND] 分类浏览返回:', apps ? apps.length : 0, '个应用');
+                
+                if (apps && apps.length > 0) {
+                    displayApps(apps, categoryTitle);
+                    
+                    if (category === 'popular') {
+                        isPopularAppsLoaded = true;
+                    }
+                } else {
+                    const defaultApps = getDefaultCategoryApps(category);
+                    displayApps(defaultApps, categoryTitle);
+                    
+                    if (category === 'popular') {
+                        isPopularAppsLoaded = true;
+                    }
+                }
+            } catch (error) {
+                console.error('[FRONTEND] 分类浏览失败:', error);
+                
+                const defaultApps = getDefaultCategoryApps(category);
+                displayApps(defaultApps, categoryTitle);
+                
+                if (category === 'popular') {
+                    isPopularAppsLoaded = true;
+                }
+            }
+        }
+        
+        function getDefaultCategoryApps(category) {
+            const categoryDefaults = {
+                'popular': defaultPopularApps,
+                'browser': [
+                    { id: 'Microsoft.Edge', name: 'Microsoft Edge', version: '最新', source: 'winget' },
+                    { id: 'Google.Chrome', name: 'Google Chrome', version: '最新', source: 'winget' },
+                    { id: 'Mozilla.Firefox', name: 'Mozilla Firefox', version: '最新', source: 'winget' }
+                ],
+                'dev': [
+                    { id: 'Microsoft.VisualStudioCode', name: 'Visual Studio Code', version: '最新', source: 'winget' },
+                    { id: 'Git.Git', name: 'Git', version: '最新', source: 'winget' },
+                    { id: 'Python.Python.3', name: 'Python 3', version: '最新', source: 'winget' }
+                ],
+                'chinese': [
+                    { id: 'Tencent.WeChat', name: '微信', version: '最新', source: 'winget' },
+                    { id: 'Tencent.QQ', name: 'QQ', version: '最新', source: 'winget' },
+                    { id: 'Baidu.BaiduNetdisk', name: '百度网盘', version: '最新', source: 'winget' }
+                ],
+                'media': [
+                    { id: 'VideoLAN.VLC', name: 'VLC Media Player', version: '最新', source: 'winget' },
+                    { id: 'Spotify.Spotify', name: 'Spotify', version: '最新', source: 'winget' },
+                    { id: '7zip.7zip', name: '7-Zip', version: '最新', source: 'winget' }
+                ],
+                'game': [
+                    { id: 'Valve.Steam', name: 'Steam', version: '最新', source: 'winget' },
+                    { id: 'EpicGames.EpicGamesLauncher', name: 'Epic Games', version: '最新', source: 'winget' }
+                ]
+            };
+            
+            return categoryDefaults[category] || defaultPopularApps;
+        }
+        
+        function displayApps(apps, title) {
+            console.log('[FRONTEND] 显示应用:', apps.length, '个，标题:', title);
+            
+            const contentDiv = document.getElementById('content');
+            currentView = 'apps';
+            
+            let html = `
+                <div class="apps-section">
+                    <h2 class="section-title">${title}</h2>
+                    <div class="metro-apps">
+            `;
+            
+            if (!apps || apps.length === 0) {
+                console.log('[FRONTEND] 应用列表为空，显示空状态');
+                html += `
+                    <div class="metro-empty">
+                        <div class="icon">😕</div>
+                        <h2>未找到软件</h2>
+                        <p>尝试其他关键词或分类</p>
+                        <button class="metro-btn" onclick="showHomePage()" style="margin-top: 20px;">
+                            返回首页
+                        </button>
+                    </div>
+                `;
+            } else {
+                console.log('[FRONTEND] 生成应用卡片');
+                apps.forEach(app => {
+                    const isInstalling = installingApps.has(app.id);
+                    const isChinaApp = app.id.includes('Tencent') || app.id.includes('Netease') || app.id.includes('Baidu');
+                    const sourceText = isChinaApp ? '国内CDN加速' : '官方源';
+                    const sourceColor = isChinaApp ? '#FF4343' : '#0078D7';
+                    
+                    html += `
+                        <div class="metro-app-card" onclick="showAppDetail('${app.id}', '${app.name.replace(/'/g, "\\'")}', '${app.version || '最新'}', '${app.source || 'winget'}')">
+                            <div class="app-card-header">
+                                <div class="app-card-icon">
+                                    ${getAppIcon(app.name)}
+                                </div>
+                                <div class="app-card-title">
+                                    <h3>${app.name}</h3>
+                                    <div class="app-id">${app.id}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="app-card-content">
+                                <div class="app-meta">
+                                    <span>版本: ${app.version || '最新'}</span>
+                                    <span style="color: ${sourceColor}">${sourceText}</span>
+                                </div>
+                                
+                                <button class="metro-install-btn ${isInstalling ? 'installing' : ''}" 
+                                        onclick="installApp('${app.id}', '${app.name.replace(/'/g, "\\'")}', event)"
+                                        ${isInstalling ? 'disabled' : ''}>
+                                    ${isInstalling ? '安装中...' : '一键安装'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            contentDiv.innerHTML = html;
+            
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (title !== '热门推荐') {
+                breadcrumb.innerHTML = `
+                    <button class="back-btn" onclick="showHomePage()">← 返回首页</button>
+                `;
+            } else {
+                breadcrumb.innerHTML = '';
+            }
+            
+            console.log('[FRONTEND] 应用显示完成');
+        }
+        
+        function showAppDetail(appId, appName, appVersion, appSource) {
+            const contentDiv = document.getElementById('content');
+            currentView = 'detail';
+            
+            const isChinaApp = appId.includes('Tencent') || appId.includes('Netease') || appId.includes('Baidu');
+            const sourceText = isChinaApp ? '国内CDN加速' : '官方源';
+            const sourceColor = isChinaApp ? '#FF4343' : '#0078D7';
+            
+            const appDescriptions = {
+                'Microsoft.Edge': '微软推出的现代浏览器，基于Chromium内核，提供出色的性能和兼容性。',
+                'Google.Chrome': '谷歌开发的快速、安全、免费的网页浏览器。',
+                'Mozilla.Firefox': '开源网页浏览器，注重隐私保护和定制化。',
+                'Microsoft.VisualStudioCode': '轻量级但功能强大的源代码编辑器。',
+                'Git.Git': '分布式版本控制系统，用于跟踪源代码更改。',
+                'Tencent.WeChat': '腾讯推出的即时通讯软件，支持文字、语音、视频聊天。',
+                'Tencent.QQ': '腾讯QQ，中国流行的即时通讯软件。',
+                'VideoLAN.VLC': '开源多媒体播放器，支持几乎所有音频和视频格式。',
+                'Valve.Steam': '数字发行平台，提供游戏购买、下载、讨论等功能。',
+                '7zip.7zip': '免费开源的压缩软件，支持多种压缩格式。',
+                'Spotify.Spotify': '音乐流媒体服务平台，提供海量音乐资源。'
+            };
+            
+            const description = appDescriptions[appId] || `${appName} 是一款优秀的应用程序，可以通过PkgHub一键安装。`;
+            
+            contentDiv.innerHTML = `
+                <button class="back-btn" onclick="showHomePage()">← 返回首页</button>
+                
+                <div class="app-detail-container">
+                    <div class="detail-header">
+                        <div class="detail-icon">
+                            ${getAppIcon(appName)}
+                        </div>
+                        <div class="detail-title">
+                            <h1>${appName}</h1>
+                            <div class="app-id">${appId}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-meta-grid">
+                        <div class="meta-item">
+                            <h4>版本</h4>
+                            <p>${appVersion}</p>
+                        </div>
+                        <div class="meta-item">
+                            <h4>来源</h4>
+                            <p style="color: ${sourceColor}">${sourceText}</p>
+                        </div>
+                        <div class="meta-item">
+                            <h4>安装方式</h4>
+                            <p>一键静默安装</p>
+                        </div>
+                        <div class="meta-item">
+                            <h4>适用系统</h4>
+                            <p>Windows 7/8/10/11</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-description">
+                        <h3>应用介绍</h3>
+                        <p>${description}</p>
+                    </div>
+                    
+                    <div class="detail-actions">
+                        <button class="detail-install-btn" onclick="installApp('${appId}', '${appName.replace(/'/g, "\\'")}')">
+                            立即安装
+                        </button>
+                        <button class="detail-secondary-btn" onclick="searchSimilar('${appName}')">
+                            查找类似应用
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            const breadcrumb = document.getElementById('breadcrumb');
+            breadcrumb.innerHTML = `
+                <button class="back-btn" onclick="showHomePage()">← 返回首页</button> / 
+                <button class="back-btn" onclick="browseCategory('${currentCategory || 'popular'}')" style="background: transparent; padding: 0;">
+                    ${currentCategory ? '分类' : '热门推荐'}
+                </button>
+            `;
+        }
+        
+        function getAppIcon(appName) {
+            const icons = {
+                'Chrome': '🌐', 'Firefox': '🦊', 'Edge': '🔵',
+                'Visual Studio': '💻', 'VSCode': '📝', 'Git': '📦',
+                '微信': '💬', 'QQ': '🐧', '网易云音乐': '🎵',
+                'Steam': '🎮', 'Spotify': '🎶', 'VLC': '📺',
+                'Python': '🐍', 'Node.js': '⬢', 'Java': '☕',
+                '7-Zip': '🗜️', 'Adobe': '🎨', 'Windows': '🪟'
+            };
+            
+            for (const [key, icon] of Object.entries(icons)) {
+                if (appName.includes(key)) return icon;
+            }
+            
+            return '📱';
+        }
+        
+        async function installApp(appId, appName, event) {
+            if (event) event.stopPropagation();
+            
+            if (installingApps.has(appId)) return;
+            
+            installingApps.add(appId);
+            
+            document.getElementById('progressContainer').classList.add('show');
+            updateInstallProgress({
+                appId,
+                status: 'started',
+                message: `准备安装 ${appName}...`
+            });
+            
+            const buttons = document.querySelectorAll(`button[onclick*="${appId}"]`);
+            buttons.forEach(btn => {
+                if (btn.classList.contains('metro-install-btn') || btn.classList.contains('detail-install-btn')) {
+                    btn.classList.add('installing');
+                    btn.textContent = '安装中...';
+                    btn.disabled = true;
+                }
+            });
+            
+            try {
+                const result = await window.electronAPI.installApp(appId, appName);
+                
+                if (result.success) {
+                    setTimeout(() => {
+                        installingApps.delete(appId);
+                        
+                        buttons.forEach(btn => {
+                            if (btn.classList.contains('metro-install-btn') || btn.classList.contains('detail-install-btn')) {
+                                btn.classList.remove('installing');
+                                btn.classList.add('installed');
+                                btn.textContent = '已安装';
+                                btn.disabled = true;
+                            }
+                        });
+                        
+                        setTimeout(() => {
+                            document.getElementById('progressContainer').classList.remove('show');
+                        }, 3000);
+                        
+                    }, 1000);
+                } else {
+                    installingApps.delete(appId);
+                    
+                    buttons.forEach(btn => {
+                        if (btn.classList.contains('metro-install-btn') || btn.classList.contains('detail-install-btn')) {
+                            btn.classList.remove('installing');
+                            
+                            if (result.error && (result.error.includes('需要管理员权限') || result.error.includes('admin') || result.error.includes('elevation'))) {
+                                btn.classList.add('admin-required');
+                                btn.textContent = '需要管理员权限';
+                                showNotification('warning', '需要管理员权限', '请以管理员身份运行 PkgHub');
+                            } else {
+                                btn.textContent = '安装失败，重试';
+                            }
+                            btn.disabled = false;
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        document.getElementById('progressContainer').classList.remove('show');
+                    }, 3000);
+                    
+                    showNotification('error', '安装失败', result.error || '安装过程中出现错误');
+                }
+            } catch (error) {
+                installingApps.delete(appId);
+                
+                buttons.forEach(btn => {
+                    if (btn.classList.contains('metro-install-btn') || btn.classList.contains('detail-install-btn')) {
+                        btn.classList.remove('installing');
+                        btn.textContent = '安装失败，重试';
+                        btn.disabled = false;
+                    }
+                });
+                
+                setTimeout(() => {
+                    document.getElementById('progressContainer').classList.remove('show');
+                }, 3000);
+                
+                showNotification('error', '安装失败', error.message || '安装过程中出现错误');
+            }
+        }
+        
+        function searchSimilar(appName) {
+            const firstWord = appName.split(' ')[0];
+            document.getElementById('searchInput').value = firstWord;
+            search();
+        }
+        
+        function showHomePage() {
+            currentView = 'home';
+            
+            console.log('[FRONTEND] 显示首页');
+            
+            document.getElementById('breadcrumb').innerHTML = '';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="tiles-container">
+                    <h2 class="section-title">快速分类浏览</h2>
+                    <div class="metro-grid">
+                        <div class="metro-tile tile-all" onclick="browseCategory('popular')">
+                            <div class="icon">🔥</div>
+                            <h3>热门推荐</h3>
+                            <p>探索热门软件</p>
+                        </div>
+                        
+                        <div class="metro-tile tile-browser" onclick="browseCategory('browser')">
+                            <div class="icon">🌐</div>
+                            <h3>浏览器</h3>
+                            <p>Chrome, Edge, Firefox</p>
+                        </div>
+                        
+                        <div class="metro-tile tile-dev" onclick="browseCategory('dev')">
+                            <div class="icon">💻</div>
+                            <h3>开发工具</h3>
+                            <p>IDE, 编辑器, 工具</p>
+                        </div>
+                        
+                        <div class="metro-tile tile-chinese" onclick="browseCategory('chinese')">
+                            <div class="icon">🇨🇳</div>
+                            <h3>国内软件</h3>
+                            <p>微信, QQ, 网易云</p>
+                        </div>
+                        
+                        <div class="metro-tile tile-media" onclick="browseCategory('media')">
+                            <div class="icon">🎵</div>
+                            <h3>媒体播放</h3>
+                            <p>音乐, 视频, 播放器</p>
+                        </div>
+                        
+                        <div class="metro-tile tile-game" onclick="browseCategory('game')">
+                            <div class="icon">🎮</div>
+                            <h3>游戏</h3>
+                            <p>Steam, 游戏平台</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="apps-section">
+                    <h2 class="section-title" id="appsTitle">欢迎使用 PkgHub</h2>
+                    <div class="metro-apps" id="results">
+                        <div class="metro-empty">
+                            <div class="icon">🚀</div>
+                            <h2>开始探索</h2>
+                            <p>选择一个分类或搜索软件来开始</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function updateInstallProgress(data) {
+            const title = document.getElementById('progressTitle');
+            const status = document.getElementById('progressStatus');
+            const fill = document.getElementById('progressFill');
+            const message = document.getElementById('progressMessage');
+            
+            switch(data.status) {
+                case 'started':
+                    title.textContent = `正在安装 ${data.appId}`;
+                    status.textContent = '0%';
+                    fill.style.width = '0%';
+                    message.textContent = data.message || '正在准备...';
+                    break;
+                    
+                case 'completed':
+                    title.textContent = `安装完成: ${data.appId}`;
+                    status.textContent = '100%';
+                    fill.style.width = '100%';
+                    message.textContent = '✅ 安装成功！';
+                    break;
+                    
+                case 'failed':
+                    title.textContent = `安装失败: ${data.appId}`;
+                    message.textContent = '❌ ' + (data.message || '安装失败');
+                    fill.style.background = '#FF4343';
+                    break;
+            }
+        }
+        
+        function showLoading(message = '加载中...') {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <div class="metro-empty">
+                    <div class="icon" style="font-size: 48px; animation: spin 1s linear infinite;">🔄</div>
+                    <h2>${message}</h2>
+                    <p>请稍候...</p>
+                </div>
+            `;
+        }
+        
+        function showEmptyState(title, message) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `
+                <div class="apps-section">
+                    <h2 class="section-title">${title}</h2>
+                    <div class="metro-apps">
+                        <div class="metro-empty">
+                            <div class="icon">😕</div>
+                            <h2>${message}</h2>
+                            <button class="metro-btn" onclick="showHomePage()" style="margin-top: 20px;">
+                                返回首页
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showError(errorMessage) {
+            console.error('前端错误:', errorMessage);
+        }
+    </script>
+</body>
+</html>
