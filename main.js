@@ -1653,3 +1653,4 @@ app.on('window-all-closed', () => {
 app.on('before-quit', () => {
   saveConfig();
 });
+
