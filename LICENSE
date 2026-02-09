@@ -1,39 +1,91 @@
-PkgHub - WinGet 增强版
-Copyright © 2026 [Maresoft]
+PkgHub - A GUI Client for Windows Package Manager
+Copyright 2026 Maresoft
 
-根据 Commons Clause 和 Apache 2.0 许可证授权
+=======================================================================
+Apache License, Version 2.0
+=======================================================================
 
----
-Apache 许可证 2.0
-（完整文本：https://www.apache.org/licenses/LICENSE-2.0）
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-Copyright [2026] [Maresoft]
+    http://www.apache.org/licenses/LICENSE-2.0
 
-根据 Apache 许可证 2.0 版（"许可证"）授权；
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=======================================================================
+Commons Clause Restriction
+=======================================================================
+
+The Software is provided to you by the Licensor under the Apache License,
+Version 2.0 (the "License"), subject to the following supplemental terms:
+
+You may not use the Software, or any derivative works of the Software, for
+commercial purposes without obtaining a separate, additional commercial
+license from the Licensor.
+
+"Commercial purposes" means any use of the Software, or any derivative work
+of the Software, that is primarily intended for or directed toward commercial
+advantage or monetary compensation, including but not limited to:
+(a) selling the Software as a standalone product or as part of a product;
+(b) offering the Software as a service (SaaS);
+(c) using the Software internally for revenue-generating purposes.
+
+This restriction does not apply to the use of the Software pursuant to the
+Apache 2.0 License in a larger work that is made available at no charge, or
+to uses that are expressly permitted under the Apache 2.0 License.
+
+If you intend to use the Software for commercial purposes as described above,
+please contact the Licensor for a commercial license at: [Maresoft@yeah.net]
+
+For more information about the Commons Clause, please visit:
+https://commonsclause.com/
+
+=======================================================================
+【中文译本 - 仅供参考，法律效力以英文原文为准】
+=======================================================================
+
+PkgHub - Windows 包管理器图形客户端
+版权所有 2026 Maresoft
+
+=======================================================================
+Apache 许可证 2.0 版
+=======================================================================
+
+根据 Apache 许可证 2.0 版（以下简称“许可证”）授权；
 除非遵守许可证，否则您不得使用此文件。
 您可以在以下网址获取许可证副本：
 
     http://www.apache.org/licenses/LICENSE-2.0
 
 除非适用法律要求或书面同意，否则根据许可证分发的软件
-按"原样"分发，不附带任何明示或暗示的担保或条件。
-有关许可证下的权限和限制的具体语言，请参阅许可证。
+按“原样”分发，不附带任何明示或暗示的担保或条件。
+有关许可证下的权限和限制的具体语言，请参阅许可证原文。
 
----
-Commons Clause 补充条款
+=======================================================================
+Commons Clause 补充限制条款
+=======================================================================
 
-本软件根据 Apache 许可证 2.0 版授权，但受以下附加限制的约束：
+许可方根据 Apache 许可证 2.0 版（“许可证”）向您提供本软件，
+但须遵守以下补充条款：
 
-您不得在不获取我们明确事先书面许可的情况下，出于商业目的出售本软件。
-"出售本软件"包括以任何方式将本软件或本软件的衍生作品作为产品、
-服务的一部分进行打包或提供，或从中收取费用，其中向用户收取的费用的相当一部分
-可归因于本软件的功能。
+未经许可方另行获得额外的商业许可证，您不得将本软件或其衍生作品
+用于商业目的。
 
-此限制不适用于将本软件作为不收取费用的更大作品的一部分提供，
-也不适用于通过 Apache 2.0 许可证明确授权的软件使用。
+“商业目的”指任何主要旨在或指向商业优势或金钱补偿的使用，包括但不限于：
+(a) 将本软件作为独立产品或作为产品的一部分出售；
+(b) 将本软件以服务形式提供（SaaS）；
+(c) 在内部将本软件用于创收目的。
 
-如果您希望将此软件用于上述商业目的，请联系我们获取商业许可证：
-[Maresoft@yeah.net]
+本限制不适用于根据 Apache 2.0 许可证在免费提供的更大作品中使用本软件，
+也不适用于 Apache 2.0 许可证明确允许的用途。
 
-有关 Commons Clause 的更多信息，请参阅：
+如果您打算按上述描述将本软件用于商业目的，
+请联系许可方获取商业许可证：[Maresoft@yeah.net]
+
+有关 Commons Clause 的更多信息，请访问：
 https://commonsclause.com/
