@@ -8,7 +8,7 @@
 
 ## 报告安全漏洞
 如果你发现安全漏洞，请通过以下方式联系我：
-- 邮箱：your-email@example.com（替换成你的邮箱）
+- 邮箱：Maresoft@yeah.net
 
 请不要在公共Issues中报告安全漏洞，避免漏洞被滥用。
 
