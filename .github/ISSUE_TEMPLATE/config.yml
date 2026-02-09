@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 先看常见问题
+    url: https://maresoft365.github.io/pkg-hub-official-website/
+    about: 大部分基础问题都能在这里找到答案！
+  - name: 💬 交流反馈（非Bug）
+    url: https://github.com/Maresoft365/pkg-hub/discussions
+    about: 使用咨询、功能建议等非Bug类问题，欢迎去Discussions板块～
