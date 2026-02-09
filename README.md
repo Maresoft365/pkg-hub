@@ -20,7 +20,7 @@ PkgHub - 让 Windows 7 也能享受现代软件管理
 - 开发者：Maresoft
 - 开发时间：2026年
 - 技术栈：Electron + HTML + CSS + JavaScript
-- 许可证：MIT License（详见 LICENSE 文件）
+- 许可证：Apache 2.0 License（详见 LICENSE 文件）
 
 ## ✨ 核心功能
 1. **可视化搜索**：输入软件名称，一键搜索 WinGet 软件库中的资源，无需记忆命令；(一个winget install的事想记的早记住了吧doge)
