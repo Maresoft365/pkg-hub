@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PkgHub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 彩色渐变背景（保留透色） */
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+      min-height: 100vh; /* 保证背景铺满屏幕 */
+      padding: 20px;
+      display: flex; /* 让主容器垂直居中，避免顶部扎堆 */
+      flex-direction: column;
+    }
+
+    /* 主容器：限制最大宽度+垂直填充 */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto; /* 水平居中 */
+      flex: 1; /* 占满body剩余高度，避免下方留白 */
+      display: flex;
+      gap: 20px;
+    }
+
+    /* 左侧PkgHub信息区（左1/4） */
+    .pkg-info {
+      width: 25%;
+      background: rgba(255, 255, 255, 0.15); /* 低浓度毛玻璃 */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* 内部内容均匀分布，不扎堆 */
+    }
+
+    .pkg-info h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .pkg-info .desc {
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .pkg-info .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pkg-info a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .pkg-info a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* 右侧卡片容器（右3/4） */
+    .cards-container {
+      width: 75%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      align-content: start; /* 卡片从顶部开始排列，避免强制拉伸 */
+    }
+
+    /* 毛玻璃卡片（低遮罩+透色+自适应高度） */
+    .card {
+      background: rgba(255, 255, 255, 0.12); /* 极低浓度遮罩 */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: white;
+      transition: all 0.3s ease;
+      /* 删掉固定高度，完全根据内容自适应，避免空高 */
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .card p {
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.8;
+    }
+
+    /* 底部版权栏（填充下方空白） */
+    .footer {
+      max-width: 1400px;
+      margin: 20px auto 0; /* 跟主容器对齐，上方留间距 */
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .pkg-info, .cards-container {
+        width: 100%;
+      }
+      .cards-container {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- 左侧PkgHub信息区 -->
+    <div class="pkg-info">
+      <div class="top">
+        <h1>PkgHub</h1>
+        <p class="desc">基于 Electron 19 开发的 WinGet 非官方图形界面工具，让 Windows 7 也能享受现代软件管理体验，告别命令行，一键搜索/安装 Windows 软件！</p>
+      </div>
+      <div class="links">
+        <a href="https://github.com/Maresoft365/pkg-hub/releases" target="_blank">下载最新版本</a>
+        <a href="https://github.com/Maresoft365/pkg-hub/" target="_blank">查看源代码</a>
+      </div>
+    </div>
+
+    <!-- 右侧卡片区域（补充更多内容，填充空间） -->
+    <div class="cards-container">
+      <div class="card">
+        <h3>✨ 核心功能</h3>
+        <p>可视化搜索：无需记忆 winget 命令，输入软件名即可检索；<br>丝滑加载动画：搜索过程可视化，提升使用体验；<br>智能错误提示：友好反馈搜索结果，告别命令行晦涩报错；<br>自动提权：适配 WinGet 权限要求，无需手动开管理员。</p>
+      </div>
+      <div class="card">
+        <h3>📥 安装要求</h3>
+        <p>🖥️ 系统：Windows 7 SP1+（32/64位）；<br>🔧 依赖：WinGet 客户端（自动安装）；<br>💾 空间：100MB 可用磁盘空间；<br>🧠 内存：1GB 及以上。</p>
+      </div>
+      <div class="card">
+        <h3>❓ 常见问题</h3>
+        <p>Q1：Windows 7 提示缺少 DLL？<br>安装 .NET Framework 4.8 和 VC++ 2019 运行库即可；<br>Q2：搜索不到某些软件？<br>我不造啊我搜企业微信也搜不到，修修看看吧。</p>
+      </div>
+      <div class="card">
+        <h3>🛠️ 开发说明</h3>
+        <p>克隆仓库：git clone https://github.com/Maresoft365/pkg-hub.git<br>安装依赖：npm install<br>启动开发版：npm start<br>打包安装包：npm run build。</p>
+      </div>
+      <div class="card">
+        <h3>📜 许可证说明</h3>
+        <p>Commons Clause + Apache 2.0 开源许可证：<br>✅ 免费使用：个人/学习/开源项目集成；<br>❌ 需授权：销售/SaaS/商业集成。</p>
+      </div>
+      <div class="card">
+        <h3>💡 使用教程</h3>
+        <p>1. 启动软件（首次运行允许管理员权限）；<br>2. 输入软件名（如 Chrome、VS Code）；<br>3. 点击「搜索」按钮，查看/安装结果；<br>4. 「已安装」标签页可更新/卸载软件。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部栏填充下方空白 -->
+  <div class="footer">
+    Made with ❤️ by Maresoft | 最后更新：2026年2月 | 本项目为 WinGet 非官方第三方工具，与 Microsoft Corporation 无关
+  </div>
+</body>
+</html>
